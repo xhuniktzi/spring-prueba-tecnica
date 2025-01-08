@@ -9,8 +9,9 @@ import com.spring.auth.service.JwtService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin("*")
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/auth/public")
 public class AuthController {
     private final AuthService authService;
     private final JwtService jwtService;
