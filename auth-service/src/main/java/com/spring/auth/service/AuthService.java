@@ -51,4 +51,8 @@ public class AuthService {
                 .orElseThrow();
     }
 
+    public User findUserByUsername(String username) {
+        return userRepository.findByUsername(username).orElseThrow();
+    }
+
 }
