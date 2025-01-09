@@ -15,6 +15,11 @@ spring:
             uri: lb://news
             predicates:
               - Path=/news/**
+          - id: comments
+            uri: lb://comments
+            predicates:
+            - Path=/comments/**
+
 
 eureka:
   client:
