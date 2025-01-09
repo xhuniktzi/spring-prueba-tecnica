@@ -1,0 +1,91 @@
+version: '3.8'
+
+services:
+  # Base de datos para el servicio de noticias
+  db-news:
+    image: postgres:15-alpine
+    container_name: news-postgres
+    environment:
+      POSTGRES_DB: newsdb
+      POSTGRES_USER: newsuser
+      POSTGRES_PASSWORD: newspass123
+    ports:
+      - "5432:5432"
+    volumes:
+      - news-data:/var/lib/postgresql/data
+    networks:
+      - news-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U newsuser -d newsdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Base de datos para el servicio de usuarios
+  db-users:
+    image: postgres:15-alpine
+    container_name: users-postgres
+    environment:
+      POSTGRES_DB: usersdb
+      POSTGRES_USER: usersuser
+      POSTGRES_PASSWORD: userspass123
+    ports:
+      - "5433:5432"
+    volumes:
+      - users-data:/var/lib/postgresql/data
+    networks:
+      - users-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U usersuser -d usersdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Base de datos para el servicio de comentarios
+  db-comments:
+    image: postgres:15-alpine
+    container_name: comments-postgres
+    environment:
+      POSTGRES_DB: commentsdb
+      POSTGRES_USER: commentsuser
+      POSTGRES_PASSWORD: commentspass123
+    ports:
+      - "5434:5432"
+    volumes:
+      - comments-data:/var/lib/postgresql/data
+    networks:
+      - comments-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U commentsuser -d commentsdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # # Base de datos para el servicio de categorías
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    networks:
+      - news-network
+      - users-network
+    depends_on:
+      - db-users
+
+
+volumes:
+  news-data:
+  users-data:
+  comments-data:
+
+networks:
+  news-network:
+    driver: bridge
+  users-network:
+    driver: bridge
+  comments-network:
+    driver: bridge
