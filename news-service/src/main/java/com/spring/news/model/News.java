@@ -18,7 +18,7 @@ public class News {
     @Column(nullable = false)
     private String author_username;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 

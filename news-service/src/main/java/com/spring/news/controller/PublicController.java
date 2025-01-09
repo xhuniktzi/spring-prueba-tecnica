@@ -31,12 +31,11 @@ public class PublicController {
 
     @GetMapping("/news/search")
     public ResponseEntity<Page<News>> search(
-            @RequestParam(required = false) String search,
-            @RequestParam(required = false) Long categoryId,
+            @RequestParam(required = true) Long categoryId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
-        return ResponseEntity.ok(newsService.search(search, categoryId, page, size));
+        return ResponseEntity.ok(newsService.search(categoryId, page, size));
     }
 
     @GetMapping("/news/{id}")
